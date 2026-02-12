@@ -1,4 +1,5 @@
 import { test, expect,Page } from '@playwright/test';
+import { baseUrl, passWord, userName } from '../Variables/data';
 
 type RolesPerPartition=Record<string, string[]>;
 
@@ -196,10 +197,10 @@ async function ensureUserExists(page: Page, username: string): Promise<void> {
 
 test('Create User in the Vertex', async ({ page }) => {
 
-    await page.goto('https://civrq20.hsec.emeadc001.philips.com:8077/ui/calc-config/supplies/2025-10-08/home', { timeout: 60_000, waitUntil: 'domcontentloaded' });
+    await page.goto(baseUrl, { timeout: 60_000, waitUntil: 'domcontentloaded' });
 
-    await page.fill('input[name="username"], input#username', 'Test_Automation');
-    await page.fill('input[name="password"], input#password', 'Philips@12345');
+    await page.fill('input[name="username"], input#username', userName);
+    await page.fill('input[name="password"], input#password', passWord);
 
     await page.click('button[type="submit"], input[type="Login_button"]');
 
