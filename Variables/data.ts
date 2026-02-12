@@ -1,2 +1,2 @@
-export const baseUrl='https://businesscoresolutions.com/'
+export const baseUrl='https://businesscoresolutions.com/';
 
