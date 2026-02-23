@@ -174,11 +174,11 @@ async function ensureUserExists(page: Page, username: string): Promise<void> {
  
   await createNewUser(page,{NAM:['Admin'], ARGDA:['User']}, username, {
 
-    fullName: '2026 Automation Admin',
+    fullName: '$fullName',
 
-    email: '2026_admin@philips.com',
+    email: '$userEmail',
 
-    password: 'Philips@12345',
+    password: '$userPassword',
 
     partitions: ['NAM'],
 

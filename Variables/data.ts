@@ -1,4 +1,6 @@
-export const baseUrl=`$baseUrl`;
-export const userName=`$userName`;
-export const passWord=`$passWord`;
-export const NewUser = `$NewUser`;
+export const baseUrl=`https://civrq20.hsec.emeadc001.philips.com:8077/ui/calc-config/supplies/2025-10-08/home`;
+export const userName=`Test_Automation`;
+export const passWord=`Philips@12345`;
+export const NewUser = `2028_Admin`;
+
+
