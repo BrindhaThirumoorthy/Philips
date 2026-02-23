@@ -195,7 +195,7 @@ async function ensureUserExists(page: Page, username: string): Promise<void> {
 
  
 
-test('Create User in the Vertex', async ({ page }) => {
+test('Philips Instance', async ({ page }) => {
 
     await page.goto(baseUrl, { timeout: 60_000, waitUntil: 'domcontentloaded' });
 
