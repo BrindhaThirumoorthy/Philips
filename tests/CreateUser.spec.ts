@@ -1,5 +1,5 @@
 import { test, expect,Page } from '@playwright/test';
-import { baseUrl, passWord, userName } from '../Variables/data';
+import { baseUrl, NewUser, passWord, userName } from '../Variables/data';
 
 type RolesPerPartition=Record<string, string[]>;
 
@@ -223,7 +223,7 @@ await page.getByRole('combobox', { name: 'Partition' }).click();
 await page.getByRole('option', { name: 'All Partitions' }).click();
  
 
-await ensureUserExists(page, 'Pavithra')
+await ensureUserExists(page, NewUser)
 
     await page.waitForTimeout(10000);
 
