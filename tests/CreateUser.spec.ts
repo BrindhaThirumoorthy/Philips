@@ -223,7 +223,7 @@ await page.getByRole('combobox', { name: 'Partition' }).click();
 await page.getByRole('option', { name: 'All Partitions' }).click();
  
 
-await ensureUserExists(page, '2026_Admin')
+await ensureUserExists(page, 'Pavithra')
 
     await page.waitForTimeout(10000);
 
