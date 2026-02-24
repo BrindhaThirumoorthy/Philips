@@ -1,4 +1,4 @@
-$Env:REPORT_PATH="E:\Playwright\playwright-report\e3989ca7-67d0-4f8d-9958-4e90363a3333"
+$Env:REPORT_PATH="E:\Playwright\playwright-report\4974a89d-6e81-49b7-ae22-7c07ed14a304"
 $Env:OUTPUT_PATH="E:\Playwright\playwright-report"
 $Env:SCREENSHOT_PATH="E:\Playwright\screenshotDir"
 $Env:REPORT_FORMATS="html,json"
