@@ -158,11 +158,14 @@ async function ensureUserExists(page: Page, username: string): Promise<void> {
 
     emptyState.waitFor({ state: 'visible', timeout: 15000 }),
 
+  
   ]);
  
   if (await userRows.count() > 0) {
+    console.log(`**gbStart**output**splitKeyValue**User is Already Exist: ${NewUser}\n **gbEnd**`)
 
-    console.log(`User "${username}" already exists. Returning.`);
+
+    // console.log(`User "${username}" already exists. Returning.`);
 
     return
 
