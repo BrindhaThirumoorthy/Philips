@@ -162,18 +162,17 @@ async function ensureUserExists(page: Page, username: string): Promise<void> {
 
   ]);
 
-  if (await userRows.count() > 0) {
-    console.log(`**gbStart**output**splitKeyValue**User is Already Exist: ${NewUser}\n **gbEnd**`)
-
-    const row = page.locator('tr').filter({ has: page.locator(`a:has-text(${NewUser})`) });
-    const email = await row.locator('td.minWidth-90').innerText();
-    console.log(`**gbStart**emailId**splitKeyValue**${email}**gbEnd**`)
-
-    // console.log(`User "${username}" already exists. Returning.`);
-
-    return
-
-  }
+ if (await userRows.count() > 0) {
+  console.log(`**gbStart**output**splitKeyValue**User is Already Exist: ${NewUser}\n **gbEnd**`);
+ 
+  const row = page.locator('#vtx_users_table tbody tr[data-row-key]').filter({
+    has: page.getByRole('link', { name: NewUser }),
+  });
+  await row.first().waitFor({ state: 'visible' });
+  const email = await row.first().locator('td.minWidth-90').innerText();
+  console.log(`**gbStart**emailId**splitKeyValue**${email}**gbEnd**`);
+  return;
+}
 
   console.log(`User "${username}" not found. Creating...`);
 
