@@ -4,5 +4,6 @@ export const passWord=`Philips@12345`;
 export const email = `veera@businesscoresolutions.com`;
 export const fullName=`ABCUser`;
 export const NewUser=`2019_Admin1`;
+export const partition="$partition"
 
 
