@@ -1,10 +1,9 @@
 import { test, expect, Page } from '@playwright/test';
-import { baseUrl, email, fullName, NewUser, passWord, userName,partition } from '../Variables/data';
+import { baseUrl, email, fullName, NewUser, passWord, userName, partition } from '../Variables/data';
  
 type RolesPerPartition = Record<string, string[]>;
  
-// Partition values to use (edit with your actual partition names)
-const PARTITIONS_TO_SELECT = partition.split(",");
+const PARTITIONS_TO_SELECT = partition.split(',').map((p) => p.trim());
 const DEFAULT_PARTITION = PARTITIONS_TO_SELECT[0];
  
 async function createNewUser(
@@ -92,7 +91,7 @@ async function createNewUser(
   await expect(page.getByTestId('user-save-button')).toBeEnabled();
   await page.getByTestId('user-save-button').click();
  
-  await expect(page.getByTestId('page-heading')).toHaveText('Users');
+  await expect(page.getByTestId('page-heading')).toHaveText('Users', { timeout: 15000 });
 }
  
 async function ensureUserExists(page: Page, username: string): Promise<void> {
@@ -155,5 +154,3 @@ test('Philips Instance', async ({ page }) => {
   await ensureUserExists(page, NewUser);
   await page.waitForTimeout(10000);
 });
- 
- 

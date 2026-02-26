@@ -1,8 +1,8 @@
-export const baseUrl=`$baseUrl`;
-export const userName=`$userName`;
-export const passWord=`$passWord`;
-export const email = `$email`;
-export const fullName=`$fullName`;
-export const NewUser=`$NewUser`;
-export const partition="$partition"
+export const baseUrl=`https://civrq20.hsec.emeadc001.philips.com:8077/ui/calc-config/supplies/2025-10-08/home`;
+export const userName=`Test_Automation`;
+export const passWord=`Philips@12345`;
+export const email = `veera142@businesscoresolutions.com`;
+export const fullName=`ABCUser`;
+export const NewUser=`2019_Admin123456244`;
+export const partition="NAM,APACHS,APACHS2"
 
