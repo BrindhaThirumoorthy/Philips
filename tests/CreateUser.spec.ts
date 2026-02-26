@@ -152,5 +152,4 @@ test('Philips Instance', async ({ page }) => {
   await page.getByRole('option', { name: 'All Partitions' }).click();
  
   await ensureUserExists(page, NewUser);
-  await page.waitForTimeout(10000);
 });
