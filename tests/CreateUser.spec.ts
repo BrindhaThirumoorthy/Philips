@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { baseUrl, email, fullName, NewUser, passWord, userName, partition } from '../Variables/data';
+import { baseUrl, email, fullName, NewUser, passWord, userName, partition, password } from '../Variables/data';
  
 type RolesPerPartition = Record<string, string[]>;
  
@@ -124,7 +124,7 @@ async function ensureUserExists(page: Page, username: string): Promise<void> {
   await createNewUser(page, { NAM: ['Admin'], ARGDA: ['User'] }, username, {
     fullName: fullName,
     email: email,
-    password: passWord,
+    password: password,
     partitions: PARTITIONS_TO_SELECT,
     defaultPartition: DEFAULT_PARTITION,
   });
