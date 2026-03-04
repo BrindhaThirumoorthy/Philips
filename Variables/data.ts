@@ -7,4 +7,3 @@ export const NewUser=`$NewUser`;
 export const exiEmail=`exiEmail`;
 export const partition=`$partition`
 export const password=`$password`;
-

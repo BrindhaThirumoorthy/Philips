@@ -94,17 +94,29 @@ async function createNewUser(
   await expect(page.getByTestId('page-heading')).toHaveText('Users', { timeout: 15000 });
 }
  
-async function ensureUserExists(page: Page, userOrEmail: string): Promise<void> {
- 
-  const isEmail = userOrEmail.includes('@');
- 
-  await page.getByTestId('username-email-search-input').fill(userOrEmail);
+async function ensureUserExists(
 
-  await page.getByRole('button', { name: 'user name or email search' }).click();
+  page: Page,
+
+  username: string,
+
+  email: string
+
+): Promise<void> {
+ 
+  const searchInput = page.getByTestId('username-email-search-input');
+
+  const searchButton = page.getByRole('button', { name: 'user name or email search' });
  
   const userRows = page.locator('#vtx_users_table tbody tr[data-row-key]');
 
   const emptyState = page.locator('#vtx_users_table_empty');
+ 
+  // ---- Check USERNAME ----
+
+  await searchInput.fill(username);
+
+  await searchButton.click();
  
   await Promise.race([
 
@@ -115,30 +127,42 @@ async function ensureUserExists(page: Page, userOrEmail: string): Promise<void> 
   ]);
  
   if ((await userRows.count()) > 0) {
- 
-    console.log(`**gbStart**output**splitKeyValue**User Already Exists: ${userOrEmail}\n **gbEnd**`);
- 
-    const row = page.locator('#vtx_users_table tbody tr[data-row-key]').filter({
 
-      has: page.getByRole('link', { name: isEmail ? undefined : userOrEmail }),
+    console.log(`**gbStart**output**splitKeyValue**Username already exists: ${username}\n **gbEnd**`);
 
-    });
- 
-    await row.first().waitFor({ state: 'visible' });
- 
-    const emailFromTable = await row.first().locator('td.minWidth-90').innerText();
- 
-    console.log(`**gbStart**emailId**splitKeyValue**${emailFromTable}**gbEnd**`);
- 
     return;
 
   }
  
-  console.log(`User "${userOrEmail}" not found. Creating...`);
+  // ---- Check EMAIL ----
+
+  await searchInput.fill(email);
+
+  await searchButton.click();
+ 
+  await Promise.race([
+
+    userRows.first().waitFor({ state: 'visible', timeout: 15000 }),
+
+    emptyState.waitFor({ state: 'visible', timeout: 15000 }),
+
+  ]);
+ 
+  if ((await userRows.count()) > 0) {
+
+    console.log(`**gbStart**output**splitKeyValue**Email already exists: ${email}\n **gbEnd**`);
+
+    return;
+
+  }
+ 
+  // ---- CREATE USER ----
+
+  console.log(`User not found. Creating new user: ${username}`);
  
   await page.getByTestId('add-user-button').click();
  
-  await createNewUser(page, { NAM: ['Admin'], ARGDA: ['User'] }, NewUser, {
+  await createNewUser(page, { NAM: ['Admin'], ARGDA: ['User'] }, username, {
 
     fullName: fullName,
 
@@ -152,9 +176,10 @@ async function ensureUserExists(page: Page, userOrEmail: string): Promise<void> 
 
   });
  
-  console.log(`User "${NewUser}" created successfully.`);
+  console.log(`User "${username}" created successfully.`);
 
 }
+ 
  
  
 test('Philips Instance', async ({ page }) => {
@@ -176,5 +201,5 @@ test('Philips Instance', async ({ page }) => {
   await page.getByRole('combobox', { name: 'Partition' }).click();
   await page.getByRole('option', { name: 'All Partitions' }).click();
  
-  await ensureUserExists(page, exiEmail);
+  await ensureUserExists(page,NewUser, exiEmail);
 });
