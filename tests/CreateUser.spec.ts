@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { baseUrl, email, fullName, NewUser, passWord, userName, partition, password } from '../Variables/data';
+import { baseUrl, email, fullName, NewUser, passWord, userName, partition, password, exiEmail } from '../Variables/data';
  
 type RolesPerPartition = Record<string, string[]>;
  
@@ -94,43 +94,68 @@ async function createNewUser(
   await expect(page.getByTestId('page-heading')).toHaveText('Users', { timeout: 15000 });
 }
  
-async function ensureUserExists(page: Page, username: string): Promise<void> {
-  await page.getByTestId('username-email-search-input').fill(username);
+async function ensureUserExists(page: Page, userOrEmail: string): Promise<void> {
+ 
+  const isEmail = userOrEmail.includes('@');
+ 
+  await page.getByTestId('username-email-search-input').fill(userOrEmail);
+
   await page.getByRole('button', { name: 'user name or email search' }).click();
  
   const userRows = page.locator('#vtx_users_table tbody tr[data-row-key]');
+
   const emptyState = page.locator('#vtx_users_table_empty');
  
   await Promise.race([
+
     userRows.first().waitFor({ state: 'visible', timeout: 15000 }),
+
     emptyState.waitFor({ state: 'visible', timeout: 15000 }),
+
   ]);
  
   if ((await userRows.count()) > 0) {
-    console.log(`**gbStart**output**splitKeyValue**User is Already Exist: ${NewUser}\n **gbEnd**`);
+ 
+    console.log(`**gbStart**output**splitKeyValue**User Already Exists: ${userOrEmail}\n **gbEnd**`);
  
     const row = page.locator('#vtx_users_table tbody tr[data-row-key]').filter({
-      has: page.getByRole('link', { name: NewUser }),
+
+      has: page.getByRole('link', { name: isEmail ? undefined : userOrEmail }),
+
     });
+ 
     await row.first().waitFor({ state: 'visible' });
+ 
     const emailFromTable = await row.first().locator('td.minWidth-90').innerText();
+ 
     console.log(`**gbStart**emailId**splitKeyValue**${emailFromTable}**gbEnd**`);
+ 
     return;
+
   }
  
-  console.log(`User "${username}" not found. Creating...`);
+  console.log(`User "${userOrEmail}" not found. Creating...`);
+ 
   await page.getByTestId('add-user-button').click();
  
-  await createNewUser(page, { NAM: ['Admin'], ARGDA: ['User'] }, username, {
+  await createNewUser(page, { NAM: ['Admin'], ARGDA: ['User'] }, NewUser, {
+
     fullName: fullName,
+
     email: email,
+
     password: password,
+
     partitions: PARTITIONS_TO_SELECT,
+
     defaultPartition: DEFAULT_PARTITION,
+
   });
  
-  console.log(`User "${username}" created successfully.`);
+  console.log(`User "${NewUser}" created successfully.`);
+
 }
+ 
  
 test('Philips Instance', async ({ page }) => {
   await page.goto(baseUrl, { timeout: 60_000, waitUntil: 'domcontentloaded' });
@@ -151,5 +176,5 @@ test('Philips Instance', async ({ page }) => {
   await page.getByRole('combobox', { name: 'Partition' }).click();
   await page.getByRole('option', { name: 'All Partitions' }).click();
  
-  await ensureUserExists(page, NewUser);
+  await ensureUserExists(page, exiEmail);
 });
