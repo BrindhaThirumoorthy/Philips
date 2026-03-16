@@ -128,19 +128,48 @@ async function ensureUserExists(
 
   if ((await userRows.count()) > 0) {
 
-    console.log(`**gbStart**output**splitKeyValue**Username already exists: ${username}\n **gbEnd**`);
+  console.log(`**gbStart**output**splitKeyValue**Username already exists: ${username}\n**gbEnd**`);
+ 
+  const row = page
 
-    const row = page.locator('#vtx_users_table tbody tr[data-row-key]').filter({
-      has: page.getByRole('link', { name: NewUser }),
-    });
-    await row.first().waitFor({ state: 'visible' });
+    .locator('#vtx_users_table tbody tr[data-row-key]')
 
-    const emailFromTable = await row.first().locator('td.minWidth-90').innerText();
+    .filter({
 
-    console.log(`**gbStart**emailId**splitKeyValue**${emailFromTable}**gbEnd**`);
-    return;
+      has: page.getByRole('link', { name: username, exact: true }),
+
+    })
+
+    .first();
+ 
+  const rowCount = await row.count();
+
+  if (rowCount === 0) {
+
+    throw new Error(`No row found for username: ${username}`);
 
   }
+ 
+  await row.waitFor({ state: 'visible' });
+ 
+  const emailCell = row.locator('td.minWidth-90').first();
+
+  const emailCellCount = await emailCell.count();
+
+  if (emailCellCount === 0) {
+
+    throw new Error(`Email cell not found for username: ${username}`);
+
+  }
+ 
+  const emailFromTable = await emailCell.innerText();
+ 
+  console.log(`**gbStart**emailId**splitKeyValue**${emailFromTable}**gbEnd**`);
+
+  return;
+
+}
+ 
 
   // ---- Check EMAIL ----
 
